@@ -1,0 +1,2 @@
+rootProject.name='HTTP request sample using Java'
+include ':app'
