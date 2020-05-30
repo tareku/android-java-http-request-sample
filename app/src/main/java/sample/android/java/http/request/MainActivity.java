@@ -18,6 +18,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -37,11 +40,16 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Instant respondedAt = Instant.now();
-                        Duration requestDuration = Duration.between(requestedAt, respondedAt);
-
-                        // Display the first 500 characters of the response string.
-                        responseTimeTextView.setText("Request duration: " + Duration.of(requestDuration.getSeconds(), ChronoUnit.SECONDS).toMillis());
+                        try {
+                            JSONObject myJson = new JSONObject(response);
+                            String nextList = myJson.optString("next");
+                            int pokemonTotalCount = myJson.optInt("count");
+                            Instant respondedAt = Instant.now();
+                            Duration requestDuration = Duration.between(requestedAt, respondedAt);
+                            responseTimeTextView.setText(pokemonTotalCount + " pokémons found, API Request duration: " + Duration.of(requestDuration.getSeconds(), ChronoUnit.SECONDS).toMillis() + " Millis");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
