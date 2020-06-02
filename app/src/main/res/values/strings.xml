@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HTTP request sample using Java</string>
+    <string name="gotta_catch_em_all">Gotta catch em all!</string>
 </resources>

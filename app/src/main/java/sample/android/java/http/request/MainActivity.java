@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.time.Duration;
@@ -48,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
                             Instant respondedAt = Instant.now();
                             Duration requestDuration = Duration.between(requestedAt, respondedAt);
                             responseTimeTextView.setText(pokemonRoot.getCount() + " pokémons found, API Request duration: " + Duration.of(requestDuration.getSeconds(), ChronoUnit.SECONDS).toMillis() + " Millis");
+                            String[] pokemonsNames = {"bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "squirtle", "wartortle"};
+                            ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_pokemon, pokemonsNames);
+
+                            ListView listView = findViewById(R.id.pokemonsListView);
+                            listView.setAdapter(adapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
