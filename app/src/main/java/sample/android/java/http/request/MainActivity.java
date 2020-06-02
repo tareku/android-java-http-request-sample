@@ -17,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject myJson = new JSONObject(response);
-                            String nextList = myJson.optString("next");
-                            int pokemonTotalCount = myJson.optInt("count");
+                            JSONObject pokemonApiJsonResponse = new JSONObject(response);
+                            Gson gson = new Gson();
+                            PokemonRoot pokemonRoot = gson.fromJson(pokemonApiJsonResponse.toString(), PokemonRoot.class);
                             Instant respondedAt = Instant.now();
                             Duration requestDuration = Duration.between(requestedAt, respondedAt);
-                            responseTimeTextView.setText(pokemonTotalCount + " pokémons found, API Request duration: " + Duration.of(requestDuration.getSeconds(), ChronoUnit.SECONDS).toMillis() + " Millis");
+                            responseTimeTextView.setText(pokemonRoot.getCount() + " pokémons found, API Request duration: " + Duration.of(requestDuration.getSeconds(), ChronoUnit.SECONDS).toMillis() + " Millis");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
