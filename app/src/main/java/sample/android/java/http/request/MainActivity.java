@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.android.volley.toolbox.Volley;
 import com.android.volley.RequestQueue;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                             Instant respondedAt = Instant.now();
                             Duration requestDuration = Duration.between(requestedAt, respondedAt);
                             responseTimeTextView.setText(pokemonRoot.getCount() + " pokémons found, API Request duration: " + Duration.of(requestDuration.getSeconds(), ChronoUnit.SECONDS).toMillis() + " Millis");
-                            String[] pokemonsNames = {"bulbasaur", "ivysaur", "venusaur", "charmander", "charmeleon", "charizard", "squirtle", "wartortle"};
+                            List<String> pokemonsNames = pokemonRoot.getResults().stream().map(PokemonResult::getName).collect(Collectors.toList());
                             ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.activity_pokemon, pokemonsNames);
 
                             ListView listView = findViewById(R.id.pokemonsListView);
